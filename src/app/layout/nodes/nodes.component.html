@@ -1,0 +1,206 @@
+<div [@routerTransition]>
+  <ng-template #notification let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Notification</h5>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-4">
+          <img class="exclamation" src="../../../assets/images/notification.svg" alt="exclamation" height="120px" />
+        </div>
+        <div class="col-8">
+          <p>
+            Car : <small>{{ notifyCar }}</small
+            ><br />
+            Node id : <small>{{ notifyNodeId }}</small> <br />
+            Temperature : <small>{{ notifyTemp }} °C</small><br />
+            Timestamp : <small>{{ notifyTime }}</small> <br />
+            Notification : <small>The temperature is {{ notifyMessage }} the specified value.</small>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline-dark" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <!-- Battery low  -->
+  <ng-template #lowBattery let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Notification</h5>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-4">
+          <img class="exclamation" src="../../../assets/images/battery_4.svg" alt="exclamation" height="120px" />
+        </div>
+        <div class="col-8">
+          <p>
+            Car : <small>{{ batteryCar }}</small
+            ><br />
+            Node id : <small>{{ batteryNodeId }}</small> <br />
+            Battery : <small>{{ battery }} %</small> <br />
+            Timestamp : <small>{{ batteryTime }}</small> <br />
+            Notification : <small>The node is running low ({{battery}} %) </small>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline-dark" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Add new node</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <div class="row">
+          <label for="inputName" class="col-3 control-label" style="text-align: right">Node id</label>
+          <div class="col-9">
+            <input type="text" [(ngModel)]="nodeId" class="form-control" style="margin-bottom: 8px;" placeholder="node id" name="nodeId" />
+          </div>
+        </div>
+        <!-- <div class="row">
+          <label for="inputName" class="col-3 control-label" style="text-align: right">GPS id</label>
+          <div class="col-9">
+            <input type="text" [(ngModel)]="gpsId" class="form-control" style="margin-bottom: 8px;" placeholder="GPS id" name="gpsId" />
+          </div>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-success" (click)="addNewNode()">Add</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <ng-template #DeleteModel let-modal>
+    <div class="modal-body">
+      <img class="exclamation" src="../../../assets/images/exclamation.svg" alt="exclamation" height="120px" />
+      <h4 class="modal-title" style="text-align: center;">Delete</h4>
+      <h6 style="text-align: center;">Are you sure, You want to delete NodeId: {{ deleteNodeid }}</h6>
+
+      <div class="b_Delete">
+        <button class="btn btn-danger" style="margin: 10px" (click)="deleteNode()">Delete</button>
+        <button class="btn btn-outline-dark" style="margin: 10px" (click)="modal.close('Close click')">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <label style="font-size: 150%">
+    <strong>Car id </strong><small>{{ paramMapnodeId }}</small>
+  </label>
+  <button *ngIf="db.role === 'user'" class="btn btn-outline-success" style="float: right" (click)="addNodeModal(content)">
+    Add new node
+  </button>
+  <hr />
+
+  <div class="card card-signin my-3" *ngFor="let carGps of gps | async">
+    <agm-map [latitude]="carGps.latitude" [longitude]="carGps.longitude" [zoom]="15">
+      <agm-marker [latitude]="carGps.latitude" [longitude]="carGps.longitude" [iconUrl]="marker_icon"></agm-marker>
+      <!-- <agm-marker *ngFor="let marker of markersbox" 
+      [latitude]="marker.lat" 
+      [longitude]="marker.lng" 
+      [iconUrl]="marker_iconBox"></agm-marker>
+      <agm-marker *ngFor="let marker of markersgps"
+      [latitude]="marker.lat" 
+      [longitude]="marker.lng" 
+      [iconUrl]="marker_iconGPS"></agm-marker> -->
+    </agm-map>
+  </div>
+
+  <div class="conatainer" *ngFor="let item of nodeList | async">
+    <div class="row">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6">
+        <div class="card bg-light mb-3">
+          <div class="card-header" style="padding-top: 3px;padding-bottom: 2px">
+            <h5>
+              <small
+                ><b>{{ item.nodeId }}</b></small
+              >
+              <button *ngIf="db.role === 'user'" (click)="deleteModel(DeleteModel, item.nodeId)"  class="btn btn-outline-danger" type="submit" style="float: Right; border:2px;">
+                Delete
+              </button>
+              <small class="btn btn-outline-{{setColor(item.checkStatus)}}" style="float: Right; border:2px; font-size: 70%;"
+                >Latest update : {{ item.timestamp }}</small
+              >
+            </h5>
+          </div>
+          <div class="card-body" style="padding-top: 2px;padding-bottom: 2px">
+            <div class="row">
+              <div class="col-4 border-right">
+                <img
+                  class="dataImage"
+                  *ngIf="getBattery(item.battery) == 1"
+                  src="../../../assets/images/battery_1.svg"
+                  height="70px"
+                  alt="batteryImage"
+                />
+                <img
+                  class="dataImage"
+                  *ngIf="getBattery(item.battery) == 2"
+                  src="../../../assets/images/battery_2.svg"
+                  height="70px"
+                  alt="batteryImage"
+                />
+                <img
+                  class="dataImage"
+                  *ngIf="getBattery(item.battery) == 3"
+                  src="../../../assets/images/battery_3.svg"
+                  height="70px"
+                  alt="batteryImage"
+                />
+                <img
+                  class="dataImage"
+                  *ngIf="getBattery(item.battery) == 4"
+                  src="../../../assets/images/battery_4.svg"
+                  height="70px"
+                  alt="batteryImage"
+                />
+                <h2 class="dataText value">{{ item.battery }} %</h2>
+                <h6 class="dataText name">Battery</h6>
+              </div>
+
+              <div class="col-4 border-right">
+                <img class="dataImage" src="../../../assets/images/temperature.svg" height="70px" alt="temperatuerImage" />
+                <h2 class="dataText value" >{{ checkData(item.humidity,item.temperature)}} °C</h2>
+                <h6 class="dataText name">Temperature</h6>
+              </div>
+
+              <div class="col-4">
+                <img class="dataImage" src="../../../assets/images/humidity.svg" height="70px" alt="temperatuerImage" />
+                <h2 class="dataText value" >{{ checkData(item.humidity,item.humidity)}} °C</h2>
+                <h6 class="dataText name">humidity</h6>
+              </div>
+              <!-- <div class="col-4" style="position: relative">
+                <div class="tempData">
+                  <img class="imgTemp" src="../../../assets/images/hot.svg" width="20px" alt="" />
+                  &nbsp;{{ item.hightLevel }} °C 
+                 
+                </div>
+                <div class="tempData">
+                  <img class="imgTemp" src="../../../assets/images/cold.svg" width="20px" alt="" /> 
+                  &nbsp;{{ item.lowLevel }} °C
+                </div>
+                <div class="tempData name" style="padding-top: 10px">
+                  Notify {{item.countNotify}}
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3"></div>
+    </div>
+  </div>
+</div>

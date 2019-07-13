@@ -1,0 +1,55 @@
+agm-map {
+  height: 500px;
+}
+.b_Delete {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+.exclamation{
+  padding-top: 20px;
+  padding-bottom: 15px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.dataImage {
+  padding-top: 20px;
+  padding-bottom: 3px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.verticalCenter {
+  display: block;
+  margin-top: auto;
+  margin-bottom: auto;
+  height: 50%;
+}
+.border-right {
+  border-right: 1px solid #a8a7a762;
+}
+.dataText {
+  text-align: center;
+  font-weight: bold;
+  
+}
+.value {
+  font-size: 120%;
+}
+.name {
+  font-size: 80%;
+}
+
+.tempData{
+  position: relative;
+  text-align: center;
+  font-weight: bold;
+  height: 33%;
+  //border: 1px solid;
+  padding-top: 15px;
+}
+

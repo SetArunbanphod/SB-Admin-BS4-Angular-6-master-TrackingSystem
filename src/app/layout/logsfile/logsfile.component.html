@@ -1,0 +1,39 @@
+<div [@routerTransition]>
+  <label style="font-size: 150%"><strong>Logs </strong><small>Data</small></label>
+  <hr />
+  <div class="conatainer" *ngFor="let node of nodeList | async">
+    <div class="row">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6">
+        <div class="card text-Black mb-3">
+          <div class="card-header" style="padding-top: 8px;padding-bottom: 5px;">
+            <h5>
+              <small *ngIf="db.role === 'user'; else admin"><b>Name</b> {{ node.nodeId }} </small>
+              <ng-template #admin>
+                <small><b>User</b> {{ node.email }} </small>
+              </ng-template>
+
+              <button
+                class="btn btn-success"
+                [routerLink]="['/log', node.nodeId]"
+                [routerLinkActive]="['router-link-active']"
+                type="submit"
+                style="float: Right; border:2px;margin-right: 4px"
+              >
+                View
+              </button>
+            </h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">Node id : {{ node.nodeId }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngFor="let item of (testData | async)">
+ {{ item.temperature }}
+</div> -->

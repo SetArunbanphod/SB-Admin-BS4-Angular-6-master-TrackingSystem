@@ -1,0 +1,26 @@
+<div class="login-page" [@routerTransition]>
+    <div class="row justify-content-md-center">
+        <div class="col-md-4">
+            <img src="assets/images/logo.png" width="150px" class="user-avatar" />
+            <h1>Tracking System</h1>
+            <form role="form">
+                <div class="form-content">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-underline input-lg" placeholder="{{ 'Email' | translate }}" [(ngModel)]="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" class="form-control input-underline input-lg" placeholder="{{ 'Password' | translate }}" [(ngModel)]="password" name="password" required>
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <p class="text-center" (click)="authService.GoogleAuth()">Sign up with Google</p>
+                    </div> -->
+                </div>
+                <a class="btn rounded-btn" (click)="onLoggedin()">{{ 'Log in' | translate }}</a>
+                &nbsp;&nbsp;
+                <a class="btn rounded-btn" [routerLink]="['/signup']">{{ 'Register' | translate }}</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,143 @@
+<div [@routerTransition]>
+  <ng-template #setting let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Setting</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h6 style="font-style: italic;">*Notification of temperature settings during.</h6>
+      <br />
+      <div class="form-group">
+        <div class="row">
+          <label for="inputName" class="col-3 control-label" style="text-align: right">Hight Level</label>
+          <div class="col-9">
+            <input
+              type="text"
+              [(ngModel)]="hightLevel"
+              class="form-control"
+              style="margin-bottom: 8px;"
+              placeholder="Hight Level"
+              name="HightLevel"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <label for="inputName" class="col-3 control-label" style="text-align: right">Low Level</label>
+          <div class="col-9">
+            <input
+              type="text"
+              [(ngModel)]="lowLevel"
+              class="form-control"
+              style="margin-bottom: 8px;"
+              placeholder="Low Level"
+              name="LowLevel"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-success" (click)="setNotification()">Done</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Add new node</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <div class="row">
+          <label for="inputName" class="col-3 control-label" style="text-align: right">Name</label>
+          <div class="col-9">
+            <input type="text" [(ngModel)]="carName" class="form-control" style="margin-bottom: 8px;" placeholder="Name" name="name" />
+          </div>
+        </div>
+        <div class="row">
+          <label for="inputName" class="col-3 control-label" style="text-align: right">Car id</label>
+          <div class="col-9">
+            <input type="text" [(ngModel)]="carId" class="form-control" style="margin-bottom: 8px;" placeholder="Car id" name="nodeId" />
+          </div>
+        </div>
+        <div class="row">
+          <label for="inputName" class="col-3 control-label" style="text-align: right">GPS id</label>
+          <div class="col-9">
+            <input type="text" [(ngModel)]="gpsId" class="form-control" style="margin-bottom: 8px;" placeholder="GPS id" name="gpsId" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-success" (click)="addNode()">Add</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <label style="font-size: 150%"><strong>Dashboard </strong><small>Overview</small></label>
+  <button *ngIf="db.role === 'user'" class="btn btn-outline-success" style="float: right" (click)="addNodeModal(content)">
+    Add new node
+  </button>
+
+  <hr />
+  <div class="conatainer" *ngFor="let node of nodeList | async">
+    <div class="row">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6">
+        <div class="card text-Black mb-3">
+          <div class="card-header" style="padding-top: 8px;padding-bottom: 5px;">
+            <h5>
+              <strong>Name </strong><small> {{ node.carName }} </small>
+              <button
+                *ngIf="db.role === 'user'"
+                class="btn btn-secondary"
+                type="submit"
+                style="float: Right; border:2px;"
+                (click)="settingBox(setting, node.car_id)"
+              >
+                Setting{{ node.key }}
+              </button>
+              <button
+                class="btn btn-success"
+                type="submit"
+                style="float: Right; border:2px;margin-right: 4px"
+                [routerLink]="['/nodes', node.car_id]"
+                routerLinkActive="router-link-active"
+              >
+                View
+              </button>
+            </h5>
+          </div>
+          <div class="card-body" style="padding-bottom: 3px">
+            <div class="row">
+              <div class="col-3">
+                <img class="dataImage" src="../../../assets/images/car.svg" width="80px" alt="carImage" />
+              </div>
+              <div class="col-9">
+                <h5 class="card-title">
+                   <b>{{ node.car_id }} </b>
+                </h5>
+                <!-- <p class="card-text">{{ node.description }}</p> -->
+                <div >
+                  <img class="imgTemp" src="../../../assets/images/hot.svg" width="20px" alt="" />
+                  &nbsp;{{ node.hightLevel }} °C &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <img class="imgTemp" src="../../../assets/images/cold.svg" width="20px" alt="" /> 
+                  &nbsp;{{ node.lowLevel }} °C
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3"></div>
+    </div>
+  </div>
+</div>
+

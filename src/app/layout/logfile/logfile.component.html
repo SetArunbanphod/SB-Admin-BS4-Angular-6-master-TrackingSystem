@@ -1,0 +1,46 @@
+<div [@routerTransition]>
+  <ng-template #DeleteModel let-modal>
+    <div class="modal-body">
+      <img class="exclamation" src="../../../assets/images/exclamation.svg" alt="exclamation" height="120px" />
+      <h4 class="modal-title" style="text-align: center;">Delete</h4>
+      <h6 style="text-align: center;">Are you sure, You want to delete Logs Data: {{ nodeId }}</h6>
+
+      <div class="b_Delete">
+        <button class="btn btn-danger" style="margin: 10px" (click)="deleteLogs()">Delete</button>
+        <button class="btn btn-outline-dark" style="margin: 10px" (click)="modal.close('Close click')">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <label style="font-size: 150%"
+    >Logs <small>{{ nodeId }}</small></label
+  >
+  <button *ngIf="db.role === 'user'" (click)="openModeldelete(DeleteModel)" class="btn btn-outline-danger" style="float: right">Delete</button>
+  <hr />
+  <div class="card mb-3">
+    <div class="card-header">Logs Data</div>
+    <div class="card-body table-responsive">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th class="textCenter">Temperature [°C]</th>
+            <th class="textCenter">Humidity [%]</th>
+            <th class="textCenter">Latitude</th>
+            <th class="textCenter">Longitude</th>
+            <th class="textCenter">Timestamp</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let item of nodeList | async">
+          <tr>
+            <td class="textCenter">{{ checkData(item.humidity,item.temperature) }}</td>
+            <td class="textCenter">{{ checkData(item.humidity,item.humidity) }}</td>
+            <td class="textCenter">{{ checkPosition(item.latitude) }}</td>
+            <td class="textCenter">{{ checkPosition(item.longitude) }}</td>
+            <td class="textCenter">{{ item.timestamp }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

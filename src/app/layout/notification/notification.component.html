@@ -1,0 +1,32 @@
+<label style="font-size: 150%;"><strong>Notification </strong><small>Data</small></label>
+<hr />
+<div class="container">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <div *ngFor="let item of notifyList | async | keyvalue " class="card text-white mb-3" style="background-color: #5f6366;">
+        <div *ngIf="item.value.notifyHight">
+          <div class="card-header">Car : {{item.value.notifyCar}}
+              <button
+              *ngIf="db.role === 'user'"
+              class="btn btn-outline-danger"
+              type="submit"
+              style="float: Right; border:2px;"
+              (click)="deleteNotification(item.key)"
+            >
+              Delete
+            </button>
+          </div>
+          <div class="card-body">
+              <p>Node id :  <small>{{ item.value.notifyNodeId }}</small> <br>
+                Temperature :  <small>{{ item.value.notifyTemp }} °C</small><br>
+                Timestamp : <small>{{ item.value.notifyTime }}</small> <br>
+                HightSet : <small>{{ item.value.notifyHight }} °C</small><br>
+                LowSet : <small>{{ item.value.notifyLow }} °C</small></p>
+          </div>
+      </div>
+      </div>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+</div>
