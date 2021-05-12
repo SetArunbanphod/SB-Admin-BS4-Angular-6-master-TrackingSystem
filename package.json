@@ -28,7 +28,7 @@
     "@ng-bootstrap/ng-bootstrap": "4.0.0",
     "@ngx-translate/core": "11.0.0",
     "@ngx-translate/http-loader": "4.0.0",
-    "chart.js": "2.7.3",
+    "chart.js": "2.9.4",
     "core-js": "2.5.7",
     "firebase": "^5.9.1",
     "font-awesome": "4.7.0",
